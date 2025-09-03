@@ -29,7 +29,7 @@ jobs:
         run: npx vitest run --coverage
 
       - name: Test server build
-        run: npx tsc -p server/tsconfig.json --noEmit
+        run: npx tsc --noEmit --project tsconfig.json
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -63,6 +63,7 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           buildpack: "https://github.com/heroku/heroku-buildpack-nodejs.git"
+          usedocker: false
           
       - name: Run database migrations (if needed)
         run: |
@@ -80,7 +81,7 @@ jobs:
       - name: Health check
         run: |
           sleep 30
-          curl --fail https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com/api/health || exit 1
+          curl --fail https://server.publicprep.ie/api/health || exit 1
 
       - name: Deployment success notification
-        run: echo "🚀 Successfully deployed to Heroku at https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com"
+        run: echo "🚀 Successfully deployed to Heroku at https://server.publicprep.ie"
