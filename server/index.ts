@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import path from "path";
 import apiRoutes from "./routes/index";
 import { setupRoutes } from "./routes";
@@ -7,6 +8,16 @@ import { DatabaseStorage } from "./storage";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Configure CORS for production (Vercel frontend to Heroku backend)
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || true, // Allow all origins in development
+  credentials: true, // Allow cookies to be sent
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 // Serve attached assets FIRST to avoid middleware interference
 app.use('/attached_assets', express.static('attached_assets', {

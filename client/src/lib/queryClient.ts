@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { getApiUrl } from "../config/api";
 
 // Global logout function - will be set by AuthProvider
 let globalLogout: (() => void) | null = null;
@@ -42,11 +43,12 @@ export async function apiRequest(
   data?: unknown | undefined,
 ): Promise<Response> {
   const isFormData = data instanceof FormData;
+  const fullUrl = getApiUrl(url);
   
-  console.log("apiRequest:", { method, url, isFormData, hasData: !!data });
+  console.log("apiRequest:", { method, url: fullUrl, isFormData, hasData: !!data });
   
   try {
-    const res = await fetch(url, {
+    const res = await fetch(fullUrl, {
       method,
       headers: (data && !isFormData) ? { "Content-Type": "application/json" } : {},
       body: isFormData ? data : (data ? JSON.stringify(data) : undefined),
@@ -69,7 +71,8 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const url = getApiUrl(queryKey.join("/") as string);
+    const res = await fetch(url, {
       credentials: "include",
     });
 
