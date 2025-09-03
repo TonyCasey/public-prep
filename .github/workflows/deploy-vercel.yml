@@ -65,12 +65,7 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Deploy to Vercel (Preview)
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "Error: VERCEL_TOKEN secret is not set"
-            exit 1
-          fi
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -103,12 +98,7 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Deploy to Vercel
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "Error: VERCEL_TOKEN secret is not set"
-            exit 1
-          fi
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
