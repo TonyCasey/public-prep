@@ -121,16 +121,14 @@ export default function ProfessionalHeader({
           </div>
 
           {/* Notification Bell */}
-          <button className="relative p-2 rounded-lg transition-colors duration-200"
-                  style={{ ':hover': { backgroundColor: 'hsl(var(--accent))' } }}>
+          <button className="relative p-2 rounded-lg transition-colors duration-200 hover:bg-accent">
             <Bell size={18} style={{ color: 'hsl(var(--muted-foreground))' }} />
             <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full" 
                   style={{ backgroundColor: 'hsl(var(--destructive))' }}></span>
           </button>
 
           {/* Help Icon */}
-          <button className="p-2 rounded-lg transition-colors duration-200"
-                  style={{ ':hover': { backgroundColor: 'hsl(var(--accent))' } }}>
+          <button className="p-2 rounded-lg transition-colors duration-200 hover:bg-accent">
             <HelpCircle size={18} style={{ color: 'hsl(var(--muted-foreground))' }} />
           </button>
 

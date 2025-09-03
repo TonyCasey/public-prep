@@ -5,21 +5,23 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRoute } from 'wouter';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
-import { apiRequest } from '@/lib/apiRequest';
-import { InterviewHeader } from '@/components/interview/InterviewHeader';
-import { QuestionContainer } from '@/components/interview/QuestionContainer';
+import { apiRequest } from '@/lib/queryClient';
+import { InterviewHeader } from '@/components/interview-redesigned/InterviewHeader';
+import { QuestionContainer } from '@/components/question/QuestionContainer';
 import { useAuth } from '@/hooks/use-auth';
-import { Interview, Question, Answer } from '@/shared/schema';
+import { Interview, Question, Answer } from '@shared/schema';
 import {
   InterviewHeader as RedesignedHeader,
   QuestionAnswerPanel,
   ProgressSidebar,
   NavigationControls
 } from '@/components/interview-redesigned';
-import { useInterviewStore } from '@/store/interview-store';
+// import { useInterviewStore } from '@/store/interview-store';
 import { Card } from '@/components/ui/card';
 
-interface SessionApiResponse extends Interview {}
+interface SessionApiResponse extends Interview {
+  currentQuestionIndex?: number;
+}
 
 interface ProgressComponentProps {
   interview: Interview;
@@ -53,13 +55,10 @@ export function InterviewPage() {
   const [, params] = useRoute('/app/interview/:id');
   const isRedesigned = params && new URLSearchParams(window.location.search).get('redesigned') === '1';
   
-  // Zustand store for managing interview state
-  const {
-    currentQuestionIndex,
-    setCurrentQuestionIndex,
-    setInterviewData,
-    resetInterview
-  } = useInterviewStore();
+  // Local state for managing interview (store doesn't exist)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const setInterviewData = (data: any) => {}; // placeholder
+  const resetInterview = () => {}; // placeholder
   
   // Refs for managing component state
   const hasFetchedInitialData = useRef(false);
