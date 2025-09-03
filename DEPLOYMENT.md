@@ -29,11 +29,11 @@ The client communicates with the server via HTTPS API calls, configured through 
 ### Client (Vercel) Environment Variables
 
 ```env
-# API Connection
-VITE_API_URL=https://your-app-name.herokuapp.com  # Your Heroku backend URL
+# API Connection (Production)
+VITE_API_URL=https://server.publicprep.ie
 
 # Stripe Public Key
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
+VITE_STRIPE_PUBLISHABLE_KEY=pk_live_xxxxx  # Use live key for production
 ```
 
 ### Server (Heroku) Environment Variables
@@ -50,7 +50,7 @@ OPENAI_API_KEY=sk-xxxxx
 DEEPGRAM_API_KEY=xxxxx
 
 # Stripe Payment Processing  
-STRIPE_SECRET_KEY=sk_test_xxxxx
+STRIPE_SECRET_KEY=sk_live_xxxxx  # Use live key for production
 STRIPE_WEBHOOK_SECRET=whsec_xxxxx
 
 # Email Service
@@ -64,8 +64,8 @@ HUBSPOT_API_KEY=xxxxx
 NODE_ENV=production
 PORT=5000  # Heroku will set this automatically
 
-# CORS Settings (to allow Vercel frontend)
-CORS_ORIGIN=https://your-app.vercel.app
+# CORS Settings (automatically configured for publicprep.ie domains)
+# CORS_ORIGIN=https://additional-domain.com  # Only if you need extra domains
 ```
 
 ## Vercel Deployment
@@ -304,18 +304,39 @@ curl http://localhost:5000/api/health
 
 ---
 
+## Production URLs
+
+### Live Application
+- **Frontend**: https://www.publicprep.ie (and https://publicprep.ie)
+- **API Backend**: https://server.publicprep.ie
+- **Health Check**: https://server.publicprep.ie/api/health
+
+### Testing Your Deployment
+
+1. **API Health Check**:
+```bash
+curl https://server.publicprep.ie/api/health
+```
+Should return: `{"status":"ok","version":"1.0.0","timestamp":"...","entities":[...]}`
+
+2. **Frontend**: Visit https://www.publicprep.ie - should load the React application
+
+3. **API Integration**: Check browser console for any CORS or API connection errors
+
 ## Quick Setup Checklist
 
-### Vercel
+### Vercel (Frontend)
 - [ ] Connect GitHub repository to Vercel
+- [ ] Set custom domain: www.publicprep.ie (and publicprep.ie)
 - [ ] Add GitHub secrets (VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID)
-- [ ] Add environment variables as GitHub secrets
+- [ ] Add environment variable: VITE_API_URL=https://server.publicprep.ie
 - [ ] Push to main branch to trigger deployment
 
-### Heroku
+### Heroku (Backend)
 - [ ] Create Heroku app
+- [ ] Set custom domain: server.publicprep.ie
 - [ ] Add GitHub secrets (HEROKU_API_KEY, HEROKU_APP_NAME, HEROKU_EMAIL)
-- [ ] Set environment variables in Heroku
+- [ ] Set all server environment variables in Heroku
 - [ ] Push to main branch or manually trigger deployment
 
 Both deployments will be automatically configured through the GitHub Actions workflows!

@@ -11,7 +11,14 @@ const app = express();
 
 // Configure CORS for production (Vercel frontend to Heroku backend)
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || true, // Allow all origins in development
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        'https://www.publicprep.ie',
+        'https://publicprep.ie',
+        'https://publicprep.vercel.app', // Vercel default domain
+        ...(process.env.CORS_ORIGIN ? [process.env.CORS_ORIGIN] : [])
+      ]
+    : true, // Allow all origins in development
   credentials: true, // Allow cookies to be sent
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
