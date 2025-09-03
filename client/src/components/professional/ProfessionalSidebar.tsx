@@ -12,14 +12,15 @@ import {
   FileText,
   BarChart3,
   Award,
-  Clock
+  Clock,
+  type LucideIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SidebarItem {
   id: string;
   label: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   href: string;
   badge?: string | number;
 }
