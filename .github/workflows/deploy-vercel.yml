@@ -61,16 +61,6 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
 
-      - name: Check secrets
-        run: |
-          echo "VERCEL_TOKEN length: ${#VERCEL_TOKEN}"
-          echo "VERCEL_ORG_ID length: ${#VERCEL_ORG_ID}"
-          echo "VERCEL_PROJECT_ID length: ${#VERCEL_PROJECT_ID}"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
         with:
@@ -102,16 +92,6 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
-
-      - name: Check secrets
-        run: |
-          echo "VERCEL_TOKEN length: ${#VERCEL_TOKEN}"
-          echo "VERCEL_ORG_ID length: ${#VERCEL_ORG_ID}"
-          echo "VERCEL_PROJECT_ID length: ${#VERCEL_PROJECT_ID}"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
