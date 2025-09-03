@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": null,
   "outputDirectory": "dist/public",
   "framework": null,
-  "installCommand": "npm ci",
+  "installCommand": null,
   "rewrites": [
     {
       "source": "/(.*)",
