@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Confirmed - Public Prep</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #e0e7ff 100%);
+      margin: 0;
+      padding: 20px 0;
+    }
+    
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+      border: 3px solid rgba(255,255,255,0.3);
+      animation: successPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes successPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .tagline {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+    
+    .content {
+      padding: 40px 30px;
+      background: #ffffff;
+    }
+    
+    .greeting {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+    
+    .intro-text {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+    
+    .plan-details {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 1px solid #10b981;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px 0;
+      position: relative;
+    }
+    
+    .plan-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .plan-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: #047857;
+      margin-bottom: 8px;
+    }
+    
+    .plan-price {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #10b981, #047857);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .plan-features {
+      margin-top: 20px;
+    }
+    
+    .features-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #047857;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    
+    .features-grid-starter {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .features-grid-premium {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .feature {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .feature-icon {
+      margin-right: 12px;
+      font-size: 16px;
+    }
+    
+    .feature-text {
+      color: #065f46;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .receipt-section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 25px;
+      margin: 30px 0;
+    }
+    
+    .receipt-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .receipt-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    
+    .receipt-item:last-child {
+      border-bottom: none;
+      font-weight: 600;
+      padding-top: 16px;
+      margin-top: 8px;
+      border-top: 2px solid #e5e7eb;
+    }
+    
+    .receipt-label {
+      color: #6b7280;
+    }
+    
+    .receipt-value {
+      color: #1f2937;
+      font-weight: 500;
+    }
+    
+    .cta-section {
+      text-align: center;
+      margin: 40px 0;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+      color: white;
+      padding: 16px 32px;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+    }
+    
+    .support-section {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      padding: 25px;
+      border-radius: 12px;
+      margin: 30px 0;
+      border-left: 4px solid #a855f7;
+      text-align: center;
+    }
+    
+    .support-title {
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    
+    .support-text {
+      color: #4b5563;
+      font-size: 14px;
+    }
+    
+    .signature {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #f3f4f6;
+    }
+    
+    .footer {
+      background: #f9fafb;
+      padding: 30px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    
+    .footer-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      margin: 0 auto 20px;
+      border-radius: 1px;
+    }
+    
+    @media (max-width: 600px) {
+      .email-container {
+        margin: 0 10px;
+        border-radius: 16px;
+      }
+      
+      .header {
+        padding: 30px 20px;
+      }
+      
+      .content {
+        padding: 30px 20px;
+      }
+      
+      .features-grid-premium {
+        grid-template-columns: 1fr;
+      }
+      
+      .plan-details, .receipt-section, .support-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <div class="header-content">
+        <div class="success-icon">✅</div>
+        <div class="logo">Public Prep</div>
+        <div class="tagline">Payment Confirmed!</div>
+        <div class="subtitle">Your subscription is now active</div>
+      </div>
+    </div>
+    
+    <div class="content">
+      <div class="greeting">Hi {{firstName}}! 👋</div>
+      
+      <div class="intro-text">
+        Great news! Your payment has been successfully processed and your {{planType}} subscription is now active. 
+        You're all set to start mastering your Irish Public Service interview skills with AI-powered coaching.
+      </div>
+      
+      <div class="plan-details">
+        <div class="plan-header">
+          <div class="plan-name">
+            {{#if (eq planType "starter")}}Interview Confidence Starter{{else}}Lifetime Premium Access{{/if}}
+          </div>
+          <div class="plan-price">
+            {{#if (eq planType "starter")}}€49{{else}}€149{{/if}}
+          </div>
+        </div>
+        
+        <div class="plan-features">
+          <div class="features-title">✨ What's Included</div>
+          <div class="{{#if (eq planType "starter")}}features-grid-starter{{else}}features-grid-premium{{/if}}">
+            {{#if (eq planType "starter")}}
+            <div class="feature">
+              <span class="feature-icon">🎯</span>
+              <span class="feature-text">1 Complete Practice Interview</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">📅</span>
+              <span class="feature-text">30-Day Access Period</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">🤖</span>
+              <span class="feature-text">AI CV Analysis & Coaching</span>
+            </div>
+            {{else}}
+            <div class="feature">
+              <span class="feature-icon">🎯</span>
+              <span class="feature-text">Unlimited Practice Interviews</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">♾️</span>
+              <span class="feature-text">Lifetime Access</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">🤖</span>
+              <span class="feature-text">Advanced AI Coaching</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">📊</span>
+              <span class="feature-text">Detailed Progress Analytics</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">🏆</span>
+              <span class="feature-text">All Grade Levels (CO-SG)</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">⚡</span>
+              <span class="feature-text">Priority Support</span>
+            </div>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      
+      <div class="receipt-section">
+        <div class="receipt-title">📄 Payment Receipt</div>
+        <div class="receipt-item">
+          <span class="receipt-label">Transaction ID:</span>
+          <span class="receipt-value">{{transactionId}}</span>
+        </div>
+        <div class="receipt-item">
+          <span class="receipt-label">Date:</span>
+          <span class="receipt-value">{{paymentDate}}</span>
+        </div>
+        <div class="receipt-item">
+          <span class="receipt-label">Plan:</span>
+          <span class="receipt-value">
+            {{#if (eq planType "starter")}}Interview Confidence Starter{{else}}Lifetime Premium Access{{/if}}
+          </span>
+        </div>
+        <div class="receipt-item">
+          <span class="receipt-label">Payment Method:</span>
+          <span class="receipt-value">{{paymentMethod}}</span>
+        </div>
+        <div class="receipt-item">
+          <span class="receipt-label">Total Paid:</span>
+          <span class="receipt-value">{{#if (eq planType "starter")}}€49.00{{else}}€149.00{{/if}}</span>
+        </div>
+      </div>
+      
+      <div class="cta-section">
+        <a href="{{websiteUrl}}/app" class="cta-button">
+          Start Practicing Now
+        </a>
+      </div>
+      
+      <div class="support-section">
+        <div class="support-title">🛟 Need Help Getting Started?</div>
+        <div class="support-text">
+          Our support team is here to help you make the most of your subscription. 
+          Contact us anytime if you have questions about using the platform.
+        </div>
+      </div>
+      
+      <div class="signature">
+        <p><strong>Welcome to the Public Prep community!</strong></p>
+        <p>We're excited to support your journey to interview success.</p>
+        <p>Best regards,<br>
+        <strong>The Public Prep Team</strong></p>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="footer-divider"></div>
+      <p>This email was sent to {{email}}</p>
+      <p>Payment processed securely by Stripe • Receipt #{{transactionId}}</p>
+      <p>© 2025 Public Prep - Ireland's #1 Public Service Interview Platform</p>
+    </div>
+  </div>
+</body>
+</html>

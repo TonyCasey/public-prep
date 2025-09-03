@@ -1,0 +1,56 @@
+
+> rest-express@1.0.0 dev
+🔍 Final Database URL check:erver/index.ts
+   Environment: development
+   Using: PRODUCTION database
+   URL fragment: ...on.tech/neondb?sslmode=require
+SendGrid email service initialized successfully
+CRM Provider HubSpot is not configured
+CRM Provider Monday.com is not configured
+12:22:40 PM [express] serving on port 5000
+Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Auth check: {
+  isAuthenticated: false,
+  sessionId: 'cikctyHhsY96sUpTKTpDP1CGUog2hnSJ',
+  user: null
+}
+12:22:43 PM [express] GET /api/user 401 in 5ms :: {"message":"Unauthorized"}
+Auth check: {
+  isAuthenticated: true,
+  sessionId: 'xZB6gCObb7jKfpOjXTLbbotomsRSl6_I',
+  user: { id: '1753186379982', email: 'tcasey+4@publicservicepre.ie' }
+}
+12:22:47 PM [express] GET /api/user 304 in 220ms :: {"id":"1753186379982","email":"tcasey+4@publicser…
+12:22:47 PM [express] POST /api/crm/track-page 200 in 304ms
+12:22:54 PM [express] POST /api/crm/track-page 200 in 338ms
+12:22:58 PM [express] GET /api/interviews 304 in 289ms :: [{"id":"9683647a-8dc5-4fb2-ba2d-b3f167e06a4…
+12:22:58 PM [express] POST /api/crm/track-page 200 in 292ms
+12:22:58 PM [express] POST /api/crm/track-page 200 in 296ms
+12:22:58 PM [express] GET /api/user/subscription 200 in 308ms
+12:23:01 PM [express] POST /api/crm/track-feature 200 in 300ms
+12:23:01 PM [express] GET /api/documents 304 in 297ms :: [{"id":"e67fcc8b-f612-4f0a-b1c3-11a2ccfbaf98…
+12:23:01 PM [express] POST /api/crm/track-page 200 in 293ms
+12:23:01 PM [express] POST /api/crm/track-page 200 in 299ms
+12:23:11 PM [express] POST /api/stripe/create-checkout-session 200 in 300ms
+12:23:15 PM [express] POST /api/stripe/create-checkout-session 200 in 298ms
+12:23:57 PM [vite] hmr update /src/components/payment/PaymentModal.tsx, /src/index.css?v=PyK3XY3VsCSO-vNN4Fh1f
+12:23:59 PM [vite] hmr update /src/components/payment/PaymentModal.tsx, /src/index.css?v=PyK3XY3VsCSO-vNN4Fh1f (x2)
+12:24:03 PM [vite] hmr update /src/components/payment/PaymentModal.tsx, /src/index.css?v=PyK3XY3VsCSO-vNN4Fh1f (x3)
+12:24:14 PM [vite] hmr update /src/components/payment/PlanCard.tsx, /src/index.css?v=PyK3XY3VsCSO-vNN4Fh1f
+12:24:59 PM [express] POST /api/stripe/create-checkout-session 200 in 1026ms
+12:25:04 PM [express] POST /api/stripe/create-checkout-session 200 in 289ms
+Auth check: {
+  isAuthenticated: true,
+  sessionId: 'xZB6gCObb7jKfpOjXTLbbotomsRSl6_I',
+  user: { id: '1753186379982', email: 'tcasey+4@publicservicepre.ie' }
+}
+12:25:11 PM [express] GET /api/user 304 in 220ms :: {"id":"1753186379982","email":"tcasey+4@publicser…
+12:25:12 PM [express] POST /api/crm/track-page 200 in 289ms
+12:25:15 PM [express] GET /api/interviews 304 in 288ms :: [{"id":"9683647a-8dc5-4fb2-ba2d-b3f167e06a4…
+12:25:15 PM [express] GET /api/user/subscription 200 in 296ms
+12:25:15 PM [express] POST /api/crm/track-page 200 in 305ms
+12:25:15 PM [express] POST /api/crm/track-page 200 in 509ms
+12:25:22 PM [express] POST /api/stripe/create-checkout-session 200 in 299ms
+12:25:27 PM [express] POST /api/stripe/create-checkout-session 200 in 287ms

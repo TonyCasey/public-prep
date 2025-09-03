@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Prep - Transactional Email Samples</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f3f4f6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .email-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+    }
+    .email-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .email-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #1f2937;
+      border-bottom: 2px solid #a855f7;
+      padding-bottom: 8px;
+    }
+    .email-description {
+      color: #6b7280;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .email-preview {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 15px;
+      background: #f9fafb;
+      font-size: 13px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .subject-line {
+      font-weight: 600;
+      color: #a855f7;
+      margin-bottom: 8px;
+    }
+    .email-content {
+      line-height: 1.5;
+      color: #374151;
+    }
+    .trigger-info {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Public Prep - Transactional Email Samples</h1>
+      <p>These are the 10 types of automated emails sent to users</p>
+    </div>
+
+    <div class="email-grid">
+      <!-- Welcome Email -->
+      <div class="email-card">
+        <div class="email-title">1. Welcome Email</div>
+        <div class="email-description">Sent when new users register</div>
+        <div class="email-preview">
+          <div class="subject-line">Welcome to Public Prep - Your Interview Success Journey Starts Now!</div>
+          <div class="email-content">
+            Hi Tom!<br><br>
+            Welcome to Ireland's premier AI-powered interview preparation platform for Public Service careers! We're thrilled to have you join our community of successful candidates.<br><br>
+            🚀 Get Started in 3 Simple Steps:<br>
+            1. Upload Your CV - Our AI analyzes your experience<br>
+            2. Upload Job Specification - Get tailored questions<br>
+            3. Practice Interviews - Master the STAR method<br><br>
+            [Start Your First Practice Session Button]
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User completes registration</div>
+      </div>
+
+      <!-- Password Reset Email -->
+      <div class="email-card">
+        <div class="email-title">2. Password Reset Email</div>
+        <div class="email-description">Sent when users request password reset</div>
+        <div class="email-preview">
+          <div class="subject-line">Reset Your Public Prep Password</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            You requested a password reset for your Public Prep account.<br><br>
+            Click the link below to reset your password:<br>
+            [Reset Password Link]<br><br>
+            This link will expire in 1 hour for security reasons.<br><br>
+            If you didn't request this reset, please ignore this email.
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User clicks "Forgot Password"</div>
+      </div>
+
+      <!-- Interview Completion (Pass) -->
+      <div class="email-card">
+        <div class="email-title">3. Interview Completion (Pass)</div>
+        <div class="email-description">Sent when users complete interview with passing score (≥60%)</div>
+        <div class="email-preview">
+          <div class="subject-line">Congratulations! You've Completed Your Practice Interview</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Congratulations on completing your practice interview for Senior Executive Officer - Department of Health!<br><br>
+            📊 Your Results:<br>
+            • Overall Score: 78% (Grade: B+)<br>
+            • Competencies Passed: 5/6<br>
+            • Session Duration: 45 minutes<br><br>
+            🎯 You're well-prepared for your actual interview! Keep practicing to maintain your confidence.
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: Interview completion with score ≥60%</div>
+      </div>
+
+      <!-- Interview Completion (Fail) -->
+      <div class="email-card">
+        <div class="email-title">4. Interview Completion (Fail)</div>
+        <div class="email-description">Sent when users complete interview with failing score (&lt;60%)</div>
+        <div class="email-preview">
+          <div class="subject-line">Practice Interview Complete - Keep Going, You're Improving!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            You've completed your practice interview for Assistant Principal Officer - Department of Finance.<br><br>
+            📊 Your Results:<br>
+            • Overall Score: 52% (Grade: C-)<br>
+            • Competencies Passed: 3/6<br>
+            • Session Duration: 38 minutes<br><br>
+            💪 Don't worry - improvement comes with practice! Focus on the areas that need work and try again.
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: Interview completion with score &lt;60%</div>
+      </div>
+
+      <!-- Payment Confirmation (Starter) -->
+      <div class="email-card">
+        <div class="email-title">5. Payment Confirmation (Starter)</div>
+        <div class="email-description">Sent when users purchase the €49 starter package</div>
+        <div class="email-preview">
+          <div class="subject-line">Payment Confirmed - Welcome to Interview Confidence Starter!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Thank you for purchasing the Interview Confidence Starter package!<br><br>
+            Payment Details:<br>
+            • Amount: €49<br>
+            • Plan: Interview Confidence Starter<br>
+            • Date: [Current Date]<br><br>
+            Your starter package includes:<br>
+            ✓ 1 Full Practice Interview Session<br>
+            ✓ CV Analysis with AI Feedback<br>
+            ✓ 30 Days Access Period
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: Successful Stripe payment for starter plan</div>
+      </div>
+
+      <!-- Payment Confirmation (Premium) -->
+      <div class="email-card">
+        <div class="email-title">6. Payment Confirmation (Premium)</div>
+        <div class="email-description">Sent when users purchase the €149 premium package</div>
+        <div class="email-preview">
+          <div class="subject-line">Payment Confirmed - Welcome to Lifetime Premium Access!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Thank you for upgrading to Premium Public Prep!<br><br>
+            Payment Details:<br>
+            • Amount: €149<br>
+            • Plan: Lifetime Premium Access<br>
+            • Date: [Current Date]<br><br>
+            You now have unlimited access to:<br>
+            ✓ Unlimited AI interview practice<br>
+            ✓ Advanced competency analysis<br>
+            ✓ Priority customer support
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: Successful Stripe payment for premium plan</div>
+      </div>
+
+      <!-- Milestone: First Interview -->
+      <div class="email-card">
+        <div class="email-title">7. Milestone: First Interview</div>
+        <div class="email-description">Sent when users complete their very first practice interview</div>
+        <div class="email-preview">
+          <div class="subject-line">🎉 Milestone Achievement: First Interview Completed!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Congratulations on completing your first practice interview! 🎉<br><br>
+            This is a significant step in your interview preparation journey. You've taken the first step towards mastering the Irish Public Service interview process.<br><br>
+            Keep practicing to build confidence and improve your skills!
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User completes first-ever interview session</div>
+      </div>
+
+      <!-- Milestone: Competency Mastery -->
+      <div class="email-card">
+        <div class="email-title">8. Milestone: Competency Mastery</div>
+        <div class="email-description">Sent when users achieve high scores in a specific competency</div>
+        <div class="email-preview">
+          <div class="subject-line">🎉 Milestone Achievement: Team Leadership Mastery Achieved!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Fantastic news! You've achieved mastery in Team Leadership! 🌟<br><br>
+            Your consistent high performance in this competency area shows you're developing the skills needed for public service leadership roles.<br><br>
+            Keep up the excellent work as you continue mastering the other competencies!
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User achieves consistent high scores (85%+) in a competency</div>
+      </div>
+
+      <!-- Milestone: Score Improvement -->
+      <div class="email-card">
+        <div class="email-title">9. Milestone: Score Improvement</div>
+        <div class="email-description">Sent when users show significant score improvement</div>
+        <div class="email-preview">
+          <div class="subject-line">🎉 Milestone Achievement: Significant Score Improvement!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Incredible progress! Your Decision Making competency score has improved significantly! 📈<br><br>
+            Previous Score: 65%<br>
+            Current Score: 82%<br>
+            Improvement: +17 points<br><br>
+            This shows your dedication to improving is paying off. Keep up the momentum!
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User improves score by 15+ points in any competency</div>
+      </div>
+
+      <!-- Milestone: Consistency -->
+      <div class="email-card">
+        <div class="email-title">10. Milestone: Consistency</div>
+        <div class="email-description">Sent when users maintain consistent high performance</div>
+        <div class="email-preview">
+          <div class="subject-line">🎉 Milestone Achievement: Consistent High Performance!</div>
+          <div class="email-content">
+            Hi Tom,<br><br>
+            Outstanding! You've demonstrated consistent high performance across multiple practice sessions! 🏆<br><br>
+            Your reliability and steady improvement show you're developing the consistency needed to excel in your actual Public Service interview.<br><br>
+            You're interview-ready - keep up this excellent momentum!
+          </div>
+        </div>
+        <div class="trigger-info">Triggered: User maintains 75%+ average score across 5+ sessions</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center; color: #6b7280;">
+      <p><strong>Email Delivery Status:</strong> SendGrid configuration needed for live email sending</p>
+      <p>All emails use professional HTML templates with responsive design and Public Prep branding</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GTM Production Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-section { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .info { color: blue; }
+        button { padding: 10px 20px; margin: 10px; background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a8a; }
+        pre { background: #eee; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 GTM Production Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Environment Check</h2>
+        <div id="env-check">Checking environment...</div>
+        
+        <h3>GTM Container ID</h3>
+        <div id="gtm-id-check"></div>
+        
+        <h3>DataLayer Status</h3>
+        <div id="datalayer-check"></div>
+        
+        <h3>GTM Script Loading</h3>
+        <div id="script-check"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Manual Test Events</h2>
+        <button onclick="testPageView()">Test Page View</button>
+        <button onclick="testCustomEvent()">Test Custom Event</button>
+        <button onclick="testPurchaseEvent()">Test Purchase Event</button>
+        <button onclick="testInterviewEvent()">Test Interview Event</button>
+        
+        <h3>Event Log</h3>
+        <div id="event-log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Verification Steps</h2>
+        <ol>
+            <li>Open Chrome DevTools (F12)</li>
+            <li>Go to Network tab and reload this page</li>
+            <li>Look for <code>gtm.js</code> request to <code>googletagmanager.com</code></li>
+            <li>Check Console tab for GTM initialization message</li>
+            <li>Install <a href="https://chrome.google.com/webstore/detail/tag-assistant-legacy-by/kejbdjndbnbjgmefkgdddjlbokphdefk" target="_blank">Google Tag Assistant</a></li>
+            <li>Refresh page and check if GTM container is detected</li>
+        </ol>
+    </div>
+
+    <script>
+        // Simulate GTM environment
+        window.dataLayer = window.dataLayer || [];
+        const GTM_ID = 'GTM-M8N2LVNS'; // Production ID
+        
+        // Initialize GTM (same logic as in the app)
+        function initializeGTM() {
+            if (window.gtmInitialized) return;
+            
+            try {
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer',GTM_ID);
+                
+                window.gtmInitialized = true;
+                log('✅ GTM initialized successfully with ID: ' + GTM_ID, 'success');
+            } catch (error) {
+                log('❌ GTM initialization failed: ' + error.message, 'error');
+            }
+        }
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('event-log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div class="${type}">[${timestamp}] ${message}</div>`;
+        }
+        
+        function testPageView() {
+            window.dataLayer.push({
+                event: 'page_view',
+                page_path: '/test-page',
+                page_title: 'GTM Test Page'
+            });
+            log('📄 Page view event sent');
+        }
+        
+        function testCustomEvent() {
+            window.dataLayer.push({
+                event: 'custom_test',
+                custom_parameter: 'test_value',
+                timestamp: Date.now()
+            });
+            log('🎯 Custom event sent');
+        }
+        
+        function testPurchaseEvent() {
+            window.dataLayer.push({
+                event: 'purchase',
+                transaction_id: 'TEST_' + Date.now(),
+                value: 49.00,
+                currency: 'EUR',
+                items: [{
+                    item_name: 'Interview Starter Package',
+                    price: 49.00
+                }]
+            });
+            log('💰 Purchase event sent');
+        }
+        
+        function testInterviewEvent() {
+            window.dataLayer.push({
+                event: 'interview_start',
+                interview_type: 'HEO Practice',
+                grade: 'HEO'
+            });
+            log('🎓 Interview event sent');
+        }
+        
+        // Run checks on page load
+        window.addEventListener('load', function() {
+            // Environment check
+            document.getElementById('env-check').innerHTML = 
+                `<span class="info">Page loaded at: ${new Date().toISOString()}</span>`;
+            
+            // GTM ID check
+            document.getElementById('gtm-id-check').innerHTML = 
+                `<span class="info">GTM Container ID: ${GTM_ID}</span>`;
+            
+            // DataLayer check
+            const dlStatus = Array.isArray(window.dataLayer) ? 
+                `<span class="success">✅ DataLayer initialized (${window.dataLayer.length} items)</span>` :
+                `<span class="error">❌ DataLayer not found</span>`;
+            document.getElementById('datalayer-check').innerHTML = dlStatus;
+            
+            // Initialize GTM
+            initializeGTM();
+            
+            // Check for GTM script after short delay
+            setTimeout(() => {
+                const gtmScript = document.querySelector('script[src*="googletagmanager.com/gtm.js"]');
+                const scriptStatus = gtmScript ? 
+                    `<span class="success">✅ GTM script loaded</span>` :
+                    `<span class="error">❌ GTM script not found</span>`;
+                document.getElementById('script-check').innerHTML = scriptStatus;
+                
+                // Log initial state
+                log('🚀 GTM test page initialized');
+                log('DataLayer contents: ' + JSON.stringify(window.dataLayer, null, 2));
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
