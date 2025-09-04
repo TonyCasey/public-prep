@@ -4,10 +4,10 @@ import {
   validatePasswordResetToken, 
   markTokenAsUsed, 
   cleanupExpiredTokens 
-} from '../../server/services/passwordResetService';
+} from '../../backend/server/services/passwordResetService';
 
 // Mock database
-vi.mock('../../server/db', () => ({
+vi.mock('../../backend/server/db', () => ({
   db: {
     insert: vi.fn().mockReturnValue({
       values: vi.fn().mockResolvedValue(undefined)
@@ -60,7 +60,7 @@ describe('Password Reset Service', () => {
 
     it('should handle database errors gracefully', async () => {
       // Mock database error
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       vi.mocked(db.insert).mockImplementationOnce(() => {
         throw new Error('Database error');
       });
@@ -96,7 +96,7 @@ describe('Password Reset Service', () => {
 
     it('should return null for expired token', async () => {
       // Mock expired token - should return empty array since expired tokens are filtered out
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       
       vi.mocked(db.select).mockReturnValueOnce({
         from: vi.fn().mockReturnValue({
@@ -112,7 +112,7 @@ describe('Password Reset Service', () => {
 
     it('should return null for used token', async () => {
       // Mock used token - should return empty array since used tokens are filtered out
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       
       vi.mocked(db.select).mockReturnValueOnce({
         from: vi.fn().mockReturnValue({
@@ -128,7 +128,7 @@ describe('Password Reset Service', () => {
 
     it('should return user data for valid token', async () => {
       // Mock valid token
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       const validTokenData = [{
         token: 'valid-token',
         email: 'test@example.com',
@@ -153,7 +153,7 @@ describe('Password Reset Service', () => {
     });
 
     it('should handle database errors gracefully', async () => {
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       vi.mocked(db.select).mockImplementationOnce(() => {
         throw new Error('Database error');
       });
@@ -172,7 +172,7 @@ describe('Password Reset Service', () => {
     });
 
     it('should handle database errors gracefully', async () => {
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       vi.mocked(db.update).mockImplementationOnce(() => {
         throw new Error('Database error');
       });
@@ -198,7 +198,7 @@ describe('Password Reset Service', () => {
     });
 
     it('should handle database errors gracefully', async () => {
-      const { db } = await import('../../server/db');
+      const { db } = await import('../../backend/server/db');
       vi.mocked(db.delete).mockImplementationOnce(() => {
         throw new Error('Database error');
       });

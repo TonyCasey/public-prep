@@ -46,7 +46,7 @@ const mockStorage = {
 };
 
 // Mock the storage module
-vi.mock('../../../server/index', () => ({
+vi.mock('../../../backend/server/index', () => ({
   storage: mockStorage
 }));
 
@@ -57,7 +57,7 @@ const mockAuth = (req: any, res: any, next: any) => {
   next();
 };
 
-vi.mock('../../../server/auth', () => ({
+vi.mock('../../../backend/server/auth', () => ({
   isAuthenticated: mockAuth
 }));
 
@@ -71,12 +71,12 @@ describe('Comprehensive Route Coverage Tests', () => {
     app.use(express.json());
     
     // Import all route modules
-    const { default: usersRouter } = await import('../../../server/routes/users');
-    const { default: documentsRouter } = await import('../../../server/routes/documents');
-    const { default: questionsRouter } = await import('../../../server/routes/questions');
-    const { default: interviewsRouter } = await import('../../../server/routes/interviews');
-    const { default: answersRouter } = await import('../../../server/routes/answers');
-    const { default: ratingsRouter } = await import('../../../server/routes/ratings');
+    const { default: usersRouter } = await import('../../../backend/server/routes/users');
+    const { default: documentsRouter } = await import('../../../backend/server/routes/documents');
+    const { default: questionsRouter } = await import('../../../backend/server/routes/questions');
+    const { default: interviewsRouter } = await import('../../../backend/server/routes/interviews');
+    const { default: answersRouter } = await import('../../../backend/server/routes/answers');
+    const { default: ratingsRouter } = await import('../../../backend/server/routes/ratings');
     
     app.use('/api/users', usersRouter);
     app.use('/api/documents', documentsRouter);

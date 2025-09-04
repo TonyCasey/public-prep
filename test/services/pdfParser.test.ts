@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateFileType, validateFileSize } from '../../server/services/pdfParser'
+import { validateFileType, validateFileSize } from '../../backend/server/services/pdfParser'
 
 describe('PDF Parser Service', () => {
   describe('validateFileType', () => {

@@ -10,7 +10,7 @@ describe('Database Configuration', () => {
 
   it('should export database connection', async () => {
     // Import after mocking
-    const dbModule = await import('../../server/db');
+    const dbModule = await import('../../backend/server/db');
     
     expect(dbModule.db).toBeDefined();
     expect(typeof dbModule.db).toBe('object');

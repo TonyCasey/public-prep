@@ -6,7 +6,7 @@ import {
   sendPaymentConfirmationEmail,
   sendMilestoneAchievementEmail,
   isEmailServiceEnabled 
-} from '../../server/services/emailService';
+} from '../../backend/server/services/emailService';
 
 // Mock SendGrid
 vi.mock('@sendgrid/mail', () => ({
