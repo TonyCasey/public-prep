@@ -39,5 +39,13 @@ console.log(`   Environment: ${process.env.NODE_ENV}`);
 console.log(`   Using: ${databaseUrl.includes('super-glade') ? 'DEVELOPMENT' : 'PRODUCTION'} database`);
 console.log(`   URL fragment: ...${databaseUrl.substring(databaseUrl.length - 30)}`);
 
-export const pool = new Pool({ connectionString: databaseUrl });
+export const pool = new Pool({ 
+  connectionString: databaseUrl,
+  // Force IPv4 to avoid Heroku IPv6 connectivity issues
+  family: 4,
+  // Additional connection options for better stability
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
 export const db = drizzle(pool, { schema });
