@@ -73,9 +73,17 @@ jobs:
             password ${{ secrets.HEROKU_API_KEY }}
           EOF
           
+      - name: Prepare backend for deployment
+        run: |
+          # Copy backend files to a temporary directory
+          cp -r backend/* .
+          cp -r shared .
+          
       - name: Deploy to Heroku
         run: |
           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/public-prep.git
+          git add -A
+          git commit -m "Deploy backend" || true
           git push heroku main --force
           
       - name: Health check

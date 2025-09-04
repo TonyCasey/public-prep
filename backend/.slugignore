@@ -1,0 +1,19 @@
+# Ignore TypeScript source files (only need compiled JS)
+*.ts
+!*.d.ts
+
+# Ignore development files
+tsconfig.json
+drizzle.config.ts
+.env.example
+
+# Ignore documentation
+*.md
+
+# Ignore tests
+*.test.js
+*.spec.js
+__tests__/
+
+# Ignore source maps
+*.map

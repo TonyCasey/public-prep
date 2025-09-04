@@ -26,25 +26,27 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Serve attached assets FIRST to avoid middleware interference
-app.use('/attached_assets', express.static('attached_assets', {
-  maxAge: '1y', // Cache for 1 year
-  etag: true,
-  setHeaders: (res, path) => {
-    if (path.endsWith('.mp4')) {
-      res.set({
-        'Content-Type': 'video/mp4',
-        'Accept-Ranges': 'bytes',
-        'Cache-Control': 'public, max-age=31536000' // 1 year
-      });
-    } else if (path.endsWith('.png')) {
-      res.set({
-        'Content-Type': 'image/png',
-        'Cache-Control': 'public, max-age=31536000' // 1 year
-      });
+// Serve attached assets FIRST to avoid middleware interference (development only)
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/attached_assets', express.static('../attached_assets', {
+    maxAge: '1y', // Cache for 1 year
+    etag: true,
+    setHeaders: (res, path) => {
+      if (path.endsWith('.mp4')) {
+        res.set({
+          'Content-Type': 'video/mp4',
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'public, max-age=31536000' // 1 year
+        });
+      } else if (path.endsWith('.png')) {
+        res.set({
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=31536000' // 1 year
+        });
+      }
     }
-  }
-}));
+  }));
+}
 
 // Domain redirect middleware - redirect publicserviceprep.ie to publicprep.ie
 app.use((req, res, next) => {
