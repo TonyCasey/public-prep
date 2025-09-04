@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { apiRequest } from '@/lib/queryClient'
+import { getApiUrl } from '@/config/api'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -22,7 +23,7 @@ describe('API Utils', () => {
 
     await apiRequest('GET', '/api/test')
 
-    expect(mockFetch).toHaveBeenCalledWith('/api/test', {
+    expect(mockFetch).toHaveBeenCalledWith(getApiUrl('/api/test'), {
       method: 'GET',
       headers: {},
       body: undefined,
@@ -43,7 +44,7 @@ describe('API Utils', () => {
     const testData = { name: 'test' }
     await apiRequest('POST', '/api/test', testData)
 
-    expect(mockFetch).toHaveBeenCalledWith('/api/test', {
+    expect(mockFetch).toHaveBeenCalledWith(getApiUrl('/api/test'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(testData),
@@ -66,7 +67,7 @@ describe('API Utils', () => {
     
     await apiRequest('POST', '/api/upload', formData)
 
-    expect(mockFetch).toHaveBeenCalledWith('/api/upload', {
+    expect(mockFetch).toHaveBeenCalledWith(getApiUrl('/api/upload'), {
       method: 'POST',
       headers: {},
       body: formData,
