@@ -25,7 +25,13 @@ function getDatabaseUrl(): string {
 }
 
 // Use our environment-specific database URLs, never Replit's automatic DATABASE_URL
-const databaseUrl = getDatabaseUrl();
+let databaseUrl = getDatabaseUrl();
+
+// For production, replace hostname with IPv4 address to avoid Heroku IPv6 issues
+if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
+  databaseUrl = databaseUrl.replace('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech', '72.144.105.10');
+  console.log('🔧 Replaced hostname with IPv4 address for Heroku compatibility');
+}
 
 if (!databaseUrl) {
   throw new Error(
