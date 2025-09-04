@@ -64,6 +64,7 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           buildpack: "heroku/nodejs"
           usedocker: false
+          dontautocreate: true
           
       - name: Setup Heroku CLI
         run: |
