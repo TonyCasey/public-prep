@@ -52,6 +52,8 @@ if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glad
     user: url.username,
     password: url.password,
     ssl: { rejectUnauthorized: false },
+    // Neon requires endpoint ID for SNI when using direct IP
+    options: 'endpoint=ep-super-glade-a9u5f42c',
     // Additional connection options for better stability
     max: 20,
     idleTimeoutMillis: 30000,
