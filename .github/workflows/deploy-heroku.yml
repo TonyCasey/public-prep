@@ -73,6 +73,13 @@ jobs:
             password ${{ secrets.HEROKU_API_KEY }}
           EOF
           
+      - name: Build Backend
+        run: |
+          cd backend
+          npm install
+          npm run build
+          cd ..
+          
       - name: Prepare and Deploy to Heroku
         run: |
           # Create a temporary deployment directory
@@ -81,6 +88,10 @@ jobs:
           # Copy backend files to deployment directory
           cp -r backend/* heroku-deploy/
           cp -r shared heroku-deploy/
+          
+          # Make sure the built files are included
+          mkdir -p heroku-deploy/dist
+          cp -r backend/dist/* heroku-deploy/dist/
           
           # Initialize git in deployment directory
           cd heroku-deploy
