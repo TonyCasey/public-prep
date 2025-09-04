@@ -58,12 +58,11 @@ jobs:
 
       - name: Setup Heroku CLI
         run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
           
       - name: Login to Heroku
         run: |
-          echo "${{ secrets.HEROKU_API_KEY }}" | ~/.local/bin/heroku auth:token
+          echo "${{ secrets.HEROKU_API_KEY }}" | heroku auth:token
           
       - name: Deploy to Heroku
         run: |
@@ -72,12 +71,9 @@ jobs:
           
       - name: Run database migrations (if needed)
         run: |
-          # Login to Heroku
-          echo "${{ secrets.HEROKU_API_KEY }}" | ~/.local/bin/heroku auth:token
-          
           # Run migrations if they exist
           if [ -d "migrations" ]; then
-            ~/.local/bin/heroku run npm run db:push --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku run npm run db:push --app public-prep
           fi
 
       - name: Health check
