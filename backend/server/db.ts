@@ -27,15 +27,6 @@ function getDatabaseUrl(): string {
 // Use our environment-specific database URLs, never Replit's automatic DATABASE_URL
 let databaseUrl = getDatabaseUrl();
 
-// For production, replace hostname with IPv4 address to avoid Heroku IPv6 issues
-if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
-  // Parse the URL to reconstruct it properly with IPv4 address
-  const url = new URL(databaseUrl);
-  url.hostname = '72.144.105.10';
-  databaseUrl = url.toString();
-  console.log('🔧 Replaced hostname with IPv4 address for Heroku compatibility');
-}
-
 if (!databaseUrl) {
   throw new Error(
     "Database URL must be set. Did you forget to provision a database?",
@@ -48,13 +39,35 @@ console.log(`   Environment: ${process.env.NODE_ENV}`);
 console.log(`   Using: ${databaseUrl.includes('super-glade') ? 'DEVELOPMENT' : 'PRODUCTION'} database`);
 console.log(`   URL fragment: ...${databaseUrl.substring(databaseUrl.length - 30)}`);
 
-export const pool = new Pool({ 
-  connectionString: databaseUrl,
-  // Force IPv4 to avoid Heroku IPv6 connectivity issues
-  family: 4,
-  // Additional connection options for better stability
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+// For production, use connection object instead of URL to avoid IPv6 issues
+let poolConfig;
+if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
+  console.log('🔧 Using connection object with IPv4 for Heroku compatibility');
+  // Parse URL manually to extract connection details
+  const url = new URL(databaseUrl);
+  poolConfig = {
+    host: '72.144.105.10', // Use IPv4 directly
+    port: parseInt(url.port) || 5432,
+    database: url.pathname.replace('/', ''),
+    user: url.username,
+    password: url.password,
+    ssl: { rejectUnauthorized: false },
+    // Additional connection options for better stability
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+  };
+} else {
+  poolConfig = { 
+    connectionString: databaseUrl,
+    // Force IPv4 to avoid Heroku IPv6 connectivity issues
+    family: 4,
+    // Additional connection options for better stability
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+  };
+}
+
+export const pool = new Pool(poolConfig);
 export const db = drizzle(pool, { schema });
