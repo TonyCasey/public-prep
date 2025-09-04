@@ -2,5 +2,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
   "installCommand": "npm ci",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
