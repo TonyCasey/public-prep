@@ -78,16 +78,9 @@ jobs:
           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/public-prep.git
           git push heroku main --force
           
-      - name: Run database migrations (if needed)
-        run: |
-          # Run migrations if they exist
-          if [ -d "migrations" ]; then
-            heroku run npm run db:push --app public-prep
-          fi
-
       - name: Health check
         run: |
-          sleep 30
+          sleep 60
           curl --fail https://server.publicprep.ie/api/health || exit 1
 
       - name: Deployment success notification

@@ -1,0 +1,40 @@
+# Ignore client-side code
+/client
+/dist/public
+
+# Ignore development files
+/.github
+/e2e
+/test
+/coverage
+/.vscode
+/.claude
+
+# Ignore documentation
+*.md
+LICENSE
+
+# Ignore config files not needed in production
+.gitignore
+.prettierrc
+.prettierignore
+.eslintrc
+.env.example
+vite.config.ts
+vitest.config.ts
+tsconfig.json
+vercel.json
+netlify.toml
+
+# Ignore test and development files
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# Ignore source maps
+*.map
+
+# Ignore local files
+.DS_Store
+Thumbs.db
