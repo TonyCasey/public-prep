@@ -29,7 +29,10 @@ let databaseUrl = getDatabaseUrl();
 
 // For production, replace hostname with IPv4 address to avoid Heroku IPv6 issues
 if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
-  databaseUrl = databaseUrl.replace('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech', '72.144.105.10');
+  // Parse the URL to reconstruct it properly with IPv4 address
+  const url = new URL(databaseUrl);
+  url.hostname = '72.144.105.10';
+  databaseUrl = url.toString();
   console.log('🔧 Replaced hostname with IPv4 address for Heroku compatibility');
 }
 
