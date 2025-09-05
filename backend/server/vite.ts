@@ -1,5 +1,6 @@
 import express, { type Express } from "express";
 import { type Server } from "http";
+import path from "path";
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
@@ -19,8 +20,6 @@ export async function setupVite(app: Express, server: Server) {
 
 // Serve built frontend files in production
 export function serveStatic(app: Express) {
-  const path = require('path');
-  
   // Serve static files from frontend/dist
   app.use(express.static(path.join(process.cwd(), 'frontend/dist')));
   
