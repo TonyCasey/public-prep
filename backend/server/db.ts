@@ -3,6 +3,26 @@ const { Pool } = pg;
 import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from "@shared/schema";
 
+// Function to properly encode database URL with special characters
+function encodeDatabaseUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    // URL constructor automatically encodes special characters
+    return parsed.toString();
+  } catch (e) {
+    // If URL parsing fails, try to manually encode the password part
+    const match = url.match(/^(postgresql:\/\/)([^:]+):([^@]+)@(.+)$/);
+    if (match) {
+      const [, protocol, username, password, rest] = match;
+      const encodedPassword = encodeURIComponent(password);
+      const encodedUrl = `${protocol}${username}:${encodedPassword}@${rest}`;
+      console.log('📝 Manually encoded database URL');
+      return encodedUrl;
+    }
+    return url;
+  }
+}
+
 // Select database based on environment
 function getDatabaseUrl(): string {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -13,7 +33,8 @@ function getDatabaseUrl(): string {
       throw new Error('Production DATABASE_URL_PROD or DATABASE_URL must be configured for production environment');
     }
     console.log('🔄 Using production database:', prodUrl.substring(0, 50) + '...');
-    return prodUrl;
+    // Encode the URL to handle special characters
+    return encodeDatabaseUrl(prodUrl);
   } else {
     // Development: Use DATABASE_URL (standard) or fallback to DATABASE_URL_DEV for backwards compatibility
     const devUrl = process.env.DATABASE_URL || process.env.DATABASE_URL_DEV;
@@ -103,3 +124,5 @@ if (process.env.NODE_ENV === 'production') {
 
 export const pool = new Pool(poolConfig);
 export const db = drizzle(pool, { schema });
+// Export the properly encoded database URL for session store
+export const encodedDatabaseUrl = databaseUrl;
