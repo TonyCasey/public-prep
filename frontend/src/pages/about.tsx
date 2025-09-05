@@ -13,7 +13,7 @@ import {
   BookOpen,
   CheckCircle,
 } from "lucide-react";
-import logoHeaderPath from "@assets/logo_1753796611014.png";
+import logoHeaderPath from "@assets/logo-header.png";
 import profileImagePath from "@assets/me_1752840229490.png";
 
 export default function About() {

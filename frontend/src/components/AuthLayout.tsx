@@ -1,5 +1,5 @@
 import { CheckCircle, Target, TrendingUp } from "lucide-react";
-import logoPath from "@assets/logo_1753796611014.png";
+import logoPath from "@assets/logo.png";
 import profileImagePath from "@assets/me_1752840229490.png";
 import { Link, useLocation } from "wouter";
 

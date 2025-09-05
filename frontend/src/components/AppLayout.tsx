@@ -1,5 +1,5 @@
 import { Crown, Zap } from "lucide-react";
-import logoPath from "@assets/logo_1753796611014.png";
+import logoPath from "@assets/logo-header.png";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";

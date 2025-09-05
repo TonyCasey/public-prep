@@ -26,7 +26,8 @@ import {
   ArrowRight,
   User,
 } from "lucide-react";
-import logoHeaderPath from "@assets/logo_1753796611014.png";
+import logoHeaderPath from "@assets/logo-header.png";
+import logoPath from "@assets/logo.png";
 import profileImagePath from "@assets/me_1752840229490.png";
 import { toast } from "@/hooks/use-toast";
 
@@ -690,7 +691,7 @@ export default function Home() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <img
-                  src={logoHeaderPath}
+                  src={logoPath}
                   alt="Public Prep Logo"
                   className="h-24 w-auto"
                 />

@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, Users, Shield } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import logoHeaderPath from "@assets/logo_1753796611014.png";
+import logoHeaderPath from "@assets/logo-header.png";
+import logoPath from "@assets/logo.png";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -271,7 +272,7 @@ export default function Contact() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <img
-                  src={logoHeaderPath}
+                  src={logoPath}
                   alt="Public Prep Logo"
                   className="h-24 w-auto"
                 />

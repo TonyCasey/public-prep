@@ -1,0 +1,23 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Arrow pointing down and slightly to the right -->
+  <path d="M30 20 Q35 15 42 18 L70 35 Q75 37 78 42 L85 70 Q87 75 92 78 L100 85" 
+        stroke="#3B82F6" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        fill="none"
+        transform="rotate(-12 60 60)"/>
+  
+  <!-- Arrow head -->
+  <path d="M88 78 L100 85 L92 95 Z" 
+        fill="#3B82F6" 
+        transform="rotate(-12 60 60)"/>
+  
+  <!-- Slight shadow for depth -->
+  <path d="M32 22 Q37 17 44 20 L72 37 Q77 39 80 44 L87 72 Q89 77 94 80 L102 87" 
+        stroke="#3B82F6" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        fill="none"
+        opacity="0.3"
+        transform="rotate(-12 60 60) translate(2 2)"/>
+</svg>

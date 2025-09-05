@@ -2,7 +2,8 @@ import { memo, useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { BookOpen, Sparkles, ArrowDown } from "lucide-react";
+import { BookOpen, Sparkles } from "lucide-react";
+import arrowPath from "@assets/arrow.png";
 import WebSpeechStreamingRecorder from "@/components/question/WebSpeechStreamingRecorder";
 
 interface SampleQuestionCardProps {
@@ -106,8 +107,10 @@ const SampleQuestionCard = memo(({
                 {/* Arrow pointing to textarea */}
                 {!sampleAnswer && (
                   <div className="hidden sm:block absolute left-[40px] -top-[40px] pointer-events-none z-10 transition-opacity duration-300">
-                    <ArrowDown
-                      className="w-[8vw] h-[8vw] min-w-[80px] min-h-[80px] max-w-[120px] max-h-[120px] transform -rotate-12 opacity-80 text-blue-500"
+                    <img
+                      src={arrowPath}
+                      alt="Arrow pointing to text input"
+                      className="w-[8vw] h-[8vw] min-w-[80px] min-h-[80px] max-w-[120px] max-h-[120px] opacity-80"
                     />
                   </div>
                 )}
