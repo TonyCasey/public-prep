@@ -40,31 +40,60 @@ console.log(`   Environment: ${process.env.NODE_ENV}`);
 console.log(`   Using: ${databaseUrl.includes('super-glade') ? 'DEVELOPMENT' : 'PRODUCTION'} database`);
 console.log(`   URL fragment: ...${databaseUrl.substring(databaseUrl.length - 30)}`);
 
-// For production, use connection object instead of URL to avoid IPv6 issues
+// For production, use connection object to handle special characters and IPv6 issues
 let poolConfig;
-if (process.env.NODE_ENV === 'production' && databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
-  console.log('🔧 Using connection object with IPv4 for Heroku compatibility');
-  // Parse URL manually to extract connection details
-  const url = new URL(databaseUrl);
-  poolConfig = {
-    host: '72.144.105.10', // Use IPv4 directly
-    port: parseInt(url.port) || 5432,
-    database: url.pathname.replace('/', ''),
-    user: url.username,
-    password: url.password,
-    ssl: { rejectUnauthorized: false },
-    // Neon requires endpoint ID for SNI when using direct IP
-    options: 'endpoint=ep-super-glade-a9u5f42c',
-    // Additional connection options for better stability
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-  };
+if (process.env.NODE_ENV === 'production') {
+  try {
+    // Parse URL manually to handle special characters in password
+    const url = new URL(databaseUrl);
+    
+    if (databaseUrl.includes('ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech')) {
+      console.log('🔧 Using connection object with IPv4 for Neon database');
+      poolConfig = {
+        host: '72.144.105.10', // Use IPv4 directly for Neon
+        port: parseInt(url.port) || 5432,
+        database: url.pathname.replace('/', ''),
+        user: url.username,
+        password: decodeURIComponent(url.password),
+        ssl: { rejectUnauthorized: false },
+        // Neon requires endpoint ID for SNI when using direct IP
+        options: 'endpoint=ep-super-glade-a9u5f42c',
+        // Additional connection options for better stability
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      };
+    } else {
+      // For Supabase or other databases with special characters
+      console.log('🔧 Using connection object to handle special characters');
+      poolConfig = {
+        host: url.hostname,
+        port: parseInt(url.port) || 5432,
+        database: url.pathname.replace('/', ''),
+        user: decodeURIComponent(url.username),
+        password: decodeURIComponent(url.password),
+        ssl: { rejectUnauthorized: false },
+        // Additional connection options for better stability
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      };
+    }
+  } catch (e) {
+    console.error('Failed to parse DATABASE_URL:', e);
+    // Fallback to direct connection string
+    poolConfig = { 
+      connectionString: databaseUrl,
+      ssl: { rejectUnauthorized: false },
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    };
+  }
 } else {
+  // Development: use connection string directly
   poolConfig = { 
     connectionString: databaseUrl,
-    // Force IPv4 to avoid Heroku IPv6 connectivity issues
-    family: 4,
     // Additional connection options for better stability
     max: 20,
     idleTimeoutMillis: 30000,
