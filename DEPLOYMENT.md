@@ -6,7 +6,7 @@ This document explains how to deploy the Public Service Interview Prep applicati
 
 ## Architecture Overview
 
-- **Vercel**: Hosts the React frontend application (client/)
+- **Vercel**: Hosts the React frontend application (frontend/)
 - **Heroku**: Hosts the Express.js backend API (server/)
 - **Database**: Neon PostgreSQL (cloud hosted)
 
@@ -81,7 +81,7 @@ PORT=5000  # Heroku will set this automatically
 2. **Configure Project Settings**:
    - **Framework Preset**: Other
    - **Build Command**: `npm run build`
-   - **Output Directory**: `dist/public`
+   - **Output Directory**: `frontend/dist`
    - **Install Command**: `npm ci`
 
 ### 2. Required GitHub Secrets

@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Disallow sensitive areas
+Disallow: /api/
+Disallow: /app/
+Disallow: /auth/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /*.env$
+
+# Allow specific assets
+Allow: /public/
+Allow: /assets/
+
+# Crawl delay
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://publicprep.ie/sitemap.xml

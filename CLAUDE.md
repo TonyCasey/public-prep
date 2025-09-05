@@ -51,7 +51,7 @@ This is a full-stack TypeScript application for interview preparation with AI-po
 
 ### Directory Structure
 ```
-├── client/src/          # React frontend application
+├── frontend/src/        # React frontend application
 │   ├── components/      # Reusable UI components
 │   ├── pages/          # Route components
 │   ├── hooks/          # Custom React hooks
@@ -153,8 +153,9 @@ This is a full-stack TypeScript application for interview preparation with AI-po
 - Replit dependencies have been removed for local development
 
 ### Path Aliases
-- `@/*` → `client/src/*` (frontend components and utilities)
+- `@/*` → `frontend/src/*` (frontend components and utilities)
 - `@shared/*` → `shared/*` (shared types and schemas between frontend/backend)
+- `@assets/*` → `frontend/src/assets/*` (frontend images and static assets)
 
 ### Important Development Notes
 - Always run `npm run check` for TypeScript validation before commits

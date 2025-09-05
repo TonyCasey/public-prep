@@ -10,6 +10,7 @@ import connectPg from "connect-pg-simple";
 import { sendWelcomeEmail, sendPasswordResetEmail } from "./services/emailService";
 import { generatePasswordResetToken, validatePasswordResetToken, markTokenAsUsed } from "./services/passwordResetService";
 import { crmService } from "./services/crm";
+import { pool } from "./db";
 
 declare global {
   namespace Express {
@@ -40,7 +41,7 @@ export function setupAuth(app: Express) {
     resave: false,
     saveUninitialized: false,
     store: new PostgresSessionStore({
-      conString: process.env.DATABASE_URL,
+      pool: pool, // Use the pool from db.ts which handles IPv4 connection properly
       tableName: 'sessions',
       createTableIfMissing: true, // Allow table creation if missing
     }),

@@ -12,7 +12,7 @@
     "dev:frontend": "vite",
     "dev": "npm run dev:backend",
     "build:backend": "cd backend && npm run build",
-    "build:frontend": "vite build && node -e \"require('fs').copyFileSync('vercel.json', 'dist/public/vercel.json')\"",
+    "build:frontend": "vite build && node -e \"require('fs').copyFileSync('vercel.json', 'frontend/dist/vercel.json')\"",
     "build": "npm run build:frontend && npm run build:backend",
     "install:all": "npm install && cd backend && npm install",
     "check": "tsc"

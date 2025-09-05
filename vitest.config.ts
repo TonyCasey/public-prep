@@ -13,14 +13,16 @@ export default defineConfig({
     include: ['test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['e2e/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
     alias: {
-      '@': resolve(__dirname, './client/src'),
+      '@': resolve(__dirname, './frontend/src'),
       '@shared': resolve(__dirname, './shared'),
+      '@assets': resolve(__dirname, './frontend/src/assets'),
     },
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './client/src'),
+      '@': resolve(__dirname, './frontend/src'),
       '@shared': resolve(__dirname, './shared'),
+      '@assets': resolve(__dirname, './frontend/src/assets'),
     },
   },
 })

@@ -26,9 +26,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Serve attached assets FIRST to avoid middleware interference (development only)
+// Serve public assets FIRST to avoid middleware interference (development only)
 if (process.env.NODE_ENV !== 'production') {
-  app.use('/attached_assets', express.static('../attached_assets', {
+  app.use('/public', express.static('../public', {
     maxAge: '1y', // Cache for 1 year
     etag: true,
     setHeaders: (res, path) => {
