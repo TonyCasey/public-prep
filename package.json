@@ -8,6 +8,7 @@
     "npm": "10.x"
   },
   "scripts": {
+    "start": "cd backend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "vite",
     "dev": "npm run dev:backend",
@@ -15,7 +16,8 @@
     "build:frontend": "vite build && node -e \"require('fs').copyFileSync('vercel.json', 'frontend/dist/vercel.json')\"",
     "build": "npm run build:frontend && npm run build:backend",
     "install:all": "npm install && cd backend && npm install",
-    "check": "tsc"
+    "check": "tsc",
+    "db:push": "cd backend && npm run db:push"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
