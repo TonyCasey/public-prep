@@ -41,7 +41,7 @@ export function setupAuth(app: Express) {
     resave: false,
     saveUninitialized: false,
     store: new PostgresSessionStore({
-      conString: encodedDatabaseUrl, // Use the properly encoded database URL
+      pool: pool, // Use the existing pool that has IPv4 configuration
       tableName: 'sessions',
       createTableIfMissing: true, // Allow table creation if missing
     }),
