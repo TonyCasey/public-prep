@@ -18,22 +18,7 @@ export async function setupVite(app: Express, server: Server) {
   // No-op - Vite is handled by frontend
 }
 
-// Serve built frontend files in production
+// Static serving is handled by Vercel frontend deployment
 export function serveStatic(app: Express) {
-  // Determine correct path - on Heroku cwd is /app/backend, need to go up to /app
-  const isHeroku = process.env.NODE_ENV === 'production';
-  const frontendDistPath = isHeroku 
-    ? path.join(process.cwd(), '..', 'frontend', 'dist')
-    : path.join(process.cwd(), 'frontend', 'dist');
-  
-  app.use(express.static(frontendDistPath));
-  
-  // Serve index.html for all non-API routes (SPA routing)
-  app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(frontendDistPath, 'index.html'));
-    } else {
-      res.status(404).json({ error: 'API route not found' });
-    }
-  });
+  // No-op - static files are served by Vercel frontend
 }

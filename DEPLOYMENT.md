@@ -40,7 +40,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_live_xxxxx  # Use live key for production
 
 ```env
 # Database
-DATABASE_URL=postgresql://neondb_owner:xxxxx@ep-super-glade-a9u5f42c-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require
+DATABASE_URL=postgresql://neondb_owner:xxxxx@xxxx.neon.tech/neondb?sslmode=require&channel_binding=require
 DATABASE_URL_PROD=<production-database-url>  # Optional: separate production DB
 
 # OpenAI Integration
