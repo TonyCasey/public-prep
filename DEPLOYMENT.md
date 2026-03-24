@@ -43,7 +43,10 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_live_xxxxx  # Use live key for production
 DATABASE_URL=postgresql://neondb_owner:xxxxx@xxxx.neon.tech/neondb?sslmode=require&channel_binding=require
 DATABASE_URL_PROD=<production-database-url>  # Optional: separate production DB
 
-# OpenAI Integration
+# AI Services (Anthropic Claude - REQUIRED for question generation & answer evaluation)
+ANTHROPIC_API_KEY=sk-ant-xxxxx
+
+# Speech-to-Text (OpenAI Whisper - Optional, for voice recording feature)
 OPENAI_API_KEY=sk-xxxxx
 
 # Voice Recognition
@@ -95,7 +98,8 @@ VERCEL_PROJECT_ID=<your-vercel-project-id>
 
 # All environment variables listed above
 DATABASE_URL=<your-database-url>
-OPENAI_API_KEY=<your-openai-key>
+ANTHROPIC_API_KEY=<your-anthropic-key>  # Required for AI features
+OPENAI_API_KEY=<your-openai-key>        # Optional, for voice transcription
 DEEPGRAM_API_KEY=<your-deepgram-key>
 STRIPE_SECRET_KEY=<your-stripe-secret>
 STRIPE_WEBHOOK_SECRET=<your-stripe-webhook-secret>
@@ -170,7 +174,8 @@ Set environment variables in Heroku dashboard or via CLI:
 
 ```bash
 heroku config:set DATABASE_URL="postgresql://..." --app your-app-name
-heroku config:set OPENAI_API_KEY="sk-..." --app your-app-name
+heroku config:set ANTHROPIC_API_KEY="sk-ant-..." --app your-app-name  # Required for AI features
+heroku config:set OPENAI_API_KEY="sk-..." --app your-app-name         # Optional, for voice transcription
 heroku config:set NODE_ENV="production" --app your-app-name
 # ... set all other environment variables
 ```
