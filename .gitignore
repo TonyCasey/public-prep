@@ -104,3 +104,4 @@ coverage-report/
 .history/
 .vscode-test/
 .nyc_output/
+.vercel

@@ -1,4 +1,5 @@
 import { useState, useMemo, lazy, Suspense, useEffect } from "react";
+import { getApiUrl } from "@/config/api";
 import { useAuth } from "@/hooks/use-auth";
 import {
   showAnswerAnalysisModal,
@@ -165,7 +166,7 @@ export default function Home() {
 
     try {
       // Make actual API call to evaluate the sample answer
-      const response = await fetch("/api/sample/evaluate", {
+      const response = await fetch(getApiUrl("/api/sample/evaluate"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
