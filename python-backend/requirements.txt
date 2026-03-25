@@ -58,7 +58,6 @@ passlib==1.7.4
 pathspec==1.0.4
 pluggy==1.6.0
 protobuf==6.33.6
--e git+https://github.com/TonyCasey/public-prep.git@3581d7f27495c56263937817ce2c888afb69bd74#egg=public_prep_api&subdirectory=python-backend
 pyasn1==0.6.3
 pycparser==3.0
 pydantic==2.12.5
