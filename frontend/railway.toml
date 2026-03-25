@@ -1,7 +1,6 @@
 [build]
 builder = "nixpacks"
 buildCommand = "cd .. && npm install && npm run build:frontend"
-watchPatterns = ["frontend/**", "package.json", "vite.config.ts", "tsconfig.json"]
 
 [deploy]
 startCommand = "npx serve -s dist -l $PORT"

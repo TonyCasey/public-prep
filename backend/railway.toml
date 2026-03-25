@@ -1,6 +1,5 @@
 [build]
 builder = "nixpacks"
-watchPatterns = ["backend/**", "server/**", "shared/**", "package.json", "tsconfig.json"]
 
 [deploy]
 startCommand = "npm start"
