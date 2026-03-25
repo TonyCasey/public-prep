@@ -10,7 +10,13 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 # Import your models' Base for autogenerate support
-# from src.infrastructure.database.models import Base
+import sys
+from pathlib import Path
+
+# Add src to path so we can import models
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from infrastructure.database.models import Base  # noqa: E402
 
 config = context.config
 
@@ -29,8 +35,7 @@ elif database_url.startswith("postgresql://"):
 config.set_main_option("sqlalchemy.url", database_url)
 
 # Add your model's MetaData object here for 'autogenerate' support
-# target_metadata = Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
