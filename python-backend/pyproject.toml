@@ -151,7 +151,8 @@ ignore_missing_imports = true
 # Pytest Configuration
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["tests"]
+testpaths = ["../test/python-backend"]
+pythonpath = ["."]
 addopts = [
     "-v",
     "--strict-markers",
