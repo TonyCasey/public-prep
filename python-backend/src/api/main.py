@@ -3,38 +3,71 @@
 This is the main FastAPI application that will be deployed to Railway.
 """
 
-import os
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.infrastructure.config import get_settings
+from src.infrastructure.di.container import Container, create_container
+
+# Global container instance
+container: Container | None = None
+
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):  # noqa: ARG001
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan handler for startup/shutdown events."""
+    global container
+
     # Startup
     print("Starting Public Prep Python API...")
+
+    # Initialize DI container
+    container = create_container()
+
+    # Wire the container to modules
+    container.wire(
+        modules=[__name__],
+        packages=["src.api.routes"],
+    )
+
+    # Store container in app state for access in routes
+    app.state.container = container
+
     yield
+
     # Shutdown
     print("Shutting down Public Prep Python API...")
+
+    # Close database connections
+    if container:
+        db = container.db()
+        await db.close()
+
+    # Unwire container
+    if container:
+        container.unwire()
 
 
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
+    settings = get_settings()
+
     app = FastAPI(
         title="Public Prep API",
         description="Interview preparation platform API",
         version="0.1.0",
         lifespan=lifespan,
+        debug=settings.app_debug,
     )
 
     # Configure CORS
-    cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=cors_origins,
+        allow_origins=settings.cors_origins_list,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -48,6 +81,7 @@ def create_app() -> FastAPI:
             "status": "healthy",
             "service": "public-prep-python-api",
             "version": "0.1.0",
+            "environment": settings.app_env,
         }
 
     # Root endpoint
