@@ -1,5 +1,6 @@
 [build]
 builder = "nixpacks"
+buildCommand = "cd .. && npm install && npm run build:frontend"
 
 [deploy]
 startCommand = "npx serve -s dist -l $PORT"
