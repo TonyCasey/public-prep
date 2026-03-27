@@ -3,22 +3,17 @@
 Handles HTTP requests for AI-powered interview assistance.
 """
 
-import logging
 from typing import Any, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 
-from src.api.dependencies import DbSession
 from src.api.middleware.auth import CurrentUser
 from src.application.interfaces.ai_service import AIServiceError, IAIService
 from src.infrastructure.config import get_settings
-from src.infrastructure.repositories.document_repository import DocumentRepository
 from src.infrastructure.services.ai_service import AnthropicAIService
 
-logger = logging.getLogger(__name__)
-
-router = APIRouter(prefix="/api", tags=["ai"])
+router = APIRouter(prefix="/api/ai", tags=["ai"])
 
 
 def get_ai_service(request: Request) -> IAIService:
@@ -48,7 +43,7 @@ def get_ai_service(request: Request) -> IAIService:
 
 
 class AnalyzeCVRequest(BaseModel):
-    """CV analysis request (for direct text input)."""
+    """CV analysis request."""
 
     cv_text: str = Field(..., alias="cvText", min_length=100)
     job_spec_text: str | None = Field(None, alias="jobSpecText")
@@ -80,15 +75,6 @@ class EvaluateAnswerRequest(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-class SampleEvaluateRequest(BaseModel):
-    """Sample evaluation request (public endpoint)."""
-
-    question_text: str = Field(..., alias="questionText", min_length=10)
-    answer_text: str = Field(..., alias="answerText", min_length=20)
-
-    model_config = {"populate_by_name": True}
-
-
 class GenerateSampleAnswerRequest(BaseModel):
     """Sample answer generation request."""
 
@@ -101,16 +87,16 @@ class GenerateSampleAnswerRequest(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-# Routes - AI namespace (/api/ai/*)
+# Routes
 
 
-@router.post("/ai/analyze-cv")
-async def analyze_cv_direct(
+@router.post("/analyze-cv")
+async def analyze_cv(
     request: AnalyzeCVRequest,
     current_user: CurrentUser,
     ai_service: IAIService = Depends(get_ai_service),
 ) -> dict[str, Any]:
-    """Analyze a CV against competency framework (direct text input).
+    """Analyze a CV against competency framework.
 
     Returns key highlights, competency strengths, improvement areas,
     experience level, and public sector experience indicator.
@@ -126,7 +112,7 @@ async def analyze_cv_direct(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/ai/generate-questions")
+@router.post("/generate-questions")
 async def generate_questions(
     request: GenerateQuestionsRequest,
     current_user: CurrentUser,
@@ -152,7 +138,7 @@ async def generate_questions(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/ai/evaluate-answer")
+@router.post("/evaluate-answer")
 async def evaluate_answer(
     request: EvaluateAnswerRequest,
     current_user: CurrentUser,
@@ -176,7 +162,7 @@ async def evaluate_answer(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/ai/generate-sample-answer")
+@router.post("/generate-sample-answer")
 async def generate_sample_answer(
     request: GenerateSampleAnswerRequest,
     current_user: CurrentUser,
@@ -197,96 +183,3 @@ async def generate_sample_answer(
 
     except AIServiceError as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# Routes - CV namespace (/api/cv/*) - TypeScript backend compatible
-
-
-@router.post("/cv/analyze")
-async def analyze_cv(
-    current_user: CurrentUser,
-    db: DbSession,
-    ai_service: IAIService = Depends(get_ai_service),
-) -> dict[str, Any]:
-    """Analyze user's uploaded CV document.
-
-    Retrieves the user's CV and job spec from the database,
-    performs AI analysis, and updates the document with results.
-
-    This endpoint matches the TypeScript backend's /api/cv/analyze.
-    """
-    user_id = current_user.id
-
-    # Initialize repository
-    doc_repo = DocumentRepository(db)
-
-    # Get CV document
-    cv_doc = await doc_repo.get_cv(user_id)
-    if not cv_doc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"message": "No CV uploaded"},
-        )
-
-    # Get job spec if available
-    job_spec_doc = await doc_repo.get_job_spec(user_id)
-
-    # Perform AI analysis
-    try:
-        analysis = await ai_service.analyze_cv(
-            cv_text=cv_doc.content,
-            job_spec_text=job_spec_doc.content if job_spec_doc else None,
-        )
-    except AIServiceError as e:
-        logger.error(f"CV analysis failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"message": "Analysis failed. Please try again."},
-        )
-
-    # Update document with analysis
-    await doc_repo.update_analysis(cv_doc.id, analysis)
-
-    logger.info(f"CV analyzed for user {user_id}")
-
-    return analysis
-
-
-# Routes - Sample namespace (/api/sample/*) - Public endpoints
-
-
-@router.post("/sample/evaluate")
-async def sample_evaluate(
-    request: SampleEvaluateRequest,
-    ai_service: IAIService = Depends(get_ai_service),
-) -> dict[str, Any]:
-    """Evaluate a sample answer (public endpoint, no auth required).
-
-    This endpoint allows unauthenticated users to try the evaluation
-    feature with a sample question and answer.
-    """
-    try:
-        result = await ai_service.evaluate_answer(
-            question_text=request.question_text,
-            answer_text=request.answer_text,
-            competency="Team Leadership",  # Default competency for sample
-            cv_context=None,
-        )
-        return result
-
-    except AIServiceError as e:
-        error_message = str(e)
-        # Check if it's an OpenAI overloaded error
-        if "Overloaded" in error_message or "529" in error_message:
-            raise HTTPException(
-                status_code=503,
-                detail={
-                    "message": "OpenAI seems to be busy at the moment. Please try again in a few minutes.",
-                    "userFriendly": True,
-                },
-            )
-
-        raise HTTPException(
-            status_code=500,
-            detail={"message": error_message},
-        )

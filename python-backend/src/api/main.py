@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.routes import (
+    ai_router,
     answers_router,
     auth_router,
     documents_router,
@@ -107,6 +108,7 @@ def create_app() -> FastAPI:
     app.include_router(questions_router)
     app.include_router(answers_router)
     app.include_router(ratings_router)
+    app.include_router(ai_router)
 
     return app
 
