@@ -19,6 +19,7 @@ from src.api.routes import (
     questions_router,
     ratings_router,
     speech_router,
+    stripe_router,
     users_router,
 )
 from src.infrastructure.config import get_settings
@@ -111,6 +112,7 @@ def create_app() -> FastAPI:
     app.include_router(ratings_router)
     app.include_router(ai_router)
     app.include_router(speech_router)
+    app.include_router(stripe_router)
 
     return app
 
