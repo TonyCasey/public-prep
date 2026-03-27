@@ -11,6 +11,7 @@ from src.api.routes.interviews import router as interviews_router
 from src.api.routes.questions import router as questions_router
 from src.api.routes.ratings import router as ratings_router
 from src.api.routes.speech import router as speech_router
+from src.api.routes.stripe import router as stripe_router
 from src.api.routes.users import router as users_router
 
 __all__ = [
@@ -22,5 +23,6 @@ __all__ = [
     "questions_router",
     "ratings_router",
     "speech_router",
+    "stripe_router",
     "users_router",
 ]
