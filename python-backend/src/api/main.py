@@ -10,6 +10,15 @@ from typing import Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.api.routes import (
+    answers_router,
+    auth_router,
+    documents_router,
+    interviews_router,
+    questions_router,
+    ratings_router,
+    users_router,
+)
 from src.infrastructure.config import get_settings
 from src.infrastructure.di.container import Container, create_container
 
@@ -89,6 +98,15 @@ def create_app() -> FastAPI:
     async def root() -> dict[str, str]:
         """Root endpoint."""
         return {"message": "Public Prep Python API", "docs": "/docs"}
+
+    # Include routers
+    app.include_router(auth_router)
+    app.include_router(users_router)
+    app.include_router(interviews_router)
+    app.include_router(documents_router)
+    app.include_router(questions_router)
+    app.include_router(answers_router)
+    app.include_router(ratings_router)
 
     return app
 
