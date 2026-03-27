@@ -105,3 +105,17 @@ coverage-report/
 .vscode-test/
 .nyc_output/
 .vercel
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.pytest_cache/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
