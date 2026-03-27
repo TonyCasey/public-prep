@@ -2,15 +2,26 @@
 
 Provides a generic repository base class that implements common CRUD
 operations using SQLAlchemy 2.0 async patterns.
+
+Includes LINQ-like query builder for fluent queries:
+    user = await user_repo.get(lambda x: x.email == email)
+
+    interviews = await interview_repo.query() \\
+        .where(lambda x: x.user_id == user_id) \\
+        .where(lambda x: x.is_active == True) \\
+        .order_by_desc(lambda x: x.started_at) \\
+        .take(10) \\
+        .to_list()
 """
 
-from typing import Any, Generic, TypeVar
+from typing import Any, Callable, Generic, TypeVar
 from uuid import UUID
 
 from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.interfaces import IRepository
+from src.infrastructure.repositories.query_builder import QueryBuilder
 
 # Type variables for entity and model types
 EntityT = TypeVar("EntityT")
@@ -257,6 +268,75 @@ class SQLAlchemyRepository(Generic[EntityT, ModelT, IDT]):
         stmt = select(func.count()).select_from(self._model_class)
         result = await self._session.execute(stmt)
         return result.scalar_one()
+
+    # -------------------------------------------------------------------------
+    # LINQ-like Query Methods
+    # -------------------------------------------------------------------------
+
+    def query(self) -> QueryBuilder[EntityT, ModelT]:
+        """Create a LINQ-like query builder.
+
+        Returns:
+            QueryBuilder for fluent query construction
+
+        Example:
+            interviews = await repo.query() \\
+                .where(lambda x: x.user_id == user_id) \\
+                .where(lambda x: x.is_active == True) \\
+                .order_by_desc(lambda x: x.started_at) \\
+                .take(10) \\
+                .to_list()
+        """
+        return QueryBuilder(self._session, self._model_class, self._to_entity)
+
+    async def get(self, predicate: Callable[[type[ModelT]], Any]) -> EntityT | None:
+        """Get first entity matching a predicate (LINQ-style).
+
+        Args:
+            predicate: Lambda that takes model class and returns condition
+
+        Returns:
+            First matching entity, or None
+
+        Example:
+            user = await user_repo.get(lambda x: x.email == email)
+            product = await product_repo.get(lambda x: x.sku == "ABC123")
+        """
+        return await self.query().where(predicate).first()
+
+    async def find(
+        self, predicate: Callable[[type[ModelT]], Any]
+    ) -> list[EntityT]:
+        """Find all entities matching a predicate (LINQ-style).
+
+        Args:
+            predicate: Lambda that takes model class and returns condition
+
+        Returns:
+            List of matching entities
+
+        Example:
+            active_users = await user_repo.find(lambda x: x.is_active == True)
+            premium = await user_repo.find(lambda x: x.subscription_status == "premium")
+        """
+        return await self.query().where(predicate).to_list()
+
+    async def any(self, predicate: Callable[[type[ModelT]], Any] | None = None) -> bool:
+        """Check if any entities match a predicate.
+
+        Args:
+            predicate: Optional lambda condition (if None, checks if any exist)
+
+        Returns:
+            True if at least one entity matches
+
+        Example:
+            has_admin = await user_repo.any(lambda x: x.role == "admin")
+            has_users = await user_repo.any()
+        """
+        if predicate is None:
+            return await self.count() > 0
+        return await self.query().where(predicate).any()
 
     async def _get_model_by_id(self, entity_id: IDT) -> ModelT | None:
         """Get the raw SQLAlchemy model by ID.
