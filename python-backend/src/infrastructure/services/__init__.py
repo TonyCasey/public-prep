@@ -11,6 +11,11 @@ from src.infrastructure.services.file_service import (
 )
 from src.infrastructure.services.password_service import hash_password, verify_password
 from src.infrastructure.services.session_service import SessionService
+from src.infrastructure.services.speech_service import (
+    DeepgramSpeechService,
+    WhisperSpeechService,
+    get_speech_service,
+)
 
 __all__ = [
     # AI
@@ -24,4 +29,8 @@ __all__ = [
     "verify_password",
     # Session
     "SessionService",
+    # Speech
+    "DeepgramSpeechService",
+    "WhisperSpeechService",
+    "get_speech_service",
 ]
