@@ -14,10 +14,8 @@ class RegisterRequest(BaseModel):
 
     email: EmailStr = Field(..., description="User's email address")
     password: str = Field(..., min_length=6, description="Password (min 6 characters)")
-    first_name: str | None = Field(None, alias="firstName", description="User's first name")
-    last_name: str | None = Field(None, alias="lastName", description="User's last name")
-
-    model_config = ConfigDict(populate_by_name=True)
+    first_name: str | None = Field(None, description="User's first name")
+    last_name: str | None = Field(None, description="User's last name")
 
     @field_validator("password")
     @classmethod

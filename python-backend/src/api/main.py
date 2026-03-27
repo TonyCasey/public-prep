@@ -3,7 +3,6 @@
 This is the main FastAPI application that will be deployed to Railway.
 """
 
-import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -11,32 +10,17 @@ from typing import Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.middleware.health import router as health_router
 from src.api.routes import (
-    ai_router,
     answers_router,
     auth_router,
-    contact_router,
     documents_router,
     interviews_router,
-    practice_router,
     questions_router,
     ratings_router,
-    speech_router,
-    stripe_router,
     users_router,
 )
 from src.infrastructure.config import get_settings
 from src.infrastructure.di.container import Container, create_container
-from src.infrastructure.observability import (
-    flush_langfuse,
-    init_langfuse,
-    init_telemetry,
-    setup_fastapi_instrumentation,
-    shutdown_langfuse,
-)
-
-logger = logging.getLogger(__name__)
 
 # Global container instance
 container: Container | None = None
@@ -48,11 +32,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     global container
 
     # Startup
-    logger.info("Starting Public Prep Python API...")
-
-    # Initialize observability
-    init_telemetry()
-    init_langfuse()
+    print("Starting Public Prep Python API...")
 
     # Initialize DI container
     container = create_container()
@@ -69,11 +49,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     yield
 
     # Shutdown
-    logger.info("Shutting down Public Prep Python API...")
-
-    # Flush observability data
-    flush_langfuse()
-    shutdown_langfuse()
+    print("Shutting down Public Prep Python API...")
 
     # Close database connections
     if container:
@@ -91,12 +67,10 @@ def create_app() -> FastAPI:
 
     app = FastAPI(
         title="Public Prep API",
-        description="AI-powered interview preparation platform for Irish Public Service roles",
+        description="Interview preparation platform API",
         version="0.1.0",
         lifespan=lifespan,
         debug=settings.app_debug,
-        docs_url="/docs" if settings.is_development else None,
-        redoc_url="/redoc" if settings.is_development else None,
     )
 
     # Configure CORS
@@ -108,24 +82,24 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Setup OpenTelemetry instrumentation
-    if settings.otel_enabled:
-        setup_fastapi_instrumentation(app)
+    # Health check endpoint
+    @app.get("/api/health")
+    async def health_check() -> dict[str, Any]:
+        """Health check endpoint for Railway."""
+        return {
+            "status": "healthy",
+            "service": "public-prep-python-api",
+            "version": "0.1.0",
+            "environment": settings.app_env,
+        }
 
     # Root endpoint
     @app.get("/")
     async def root() -> dict[str, str]:
         """Root endpoint."""
-        return {
-            "message": "Public Prep Python API",
-            "version": "0.1.0",
-            "docs": "/docs" if settings.is_development else "disabled",
-        }
+        return {"message": "Public Prep Python API", "docs": "/docs"}
 
-    # Include health check routes
-    app.include_router(health_router, prefix="/api")
-
-    # Include API routers
+    # Include routers
     app.include_router(auth_router)
     app.include_router(users_router)
     app.include_router(interviews_router)
@@ -133,11 +107,6 @@ def create_app() -> FastAPI:
     app.include_router(questions_router)
     app.include_router(answers_router)
     app.include_router(ratings_router)
-    app.include_router(ai_router)
-    app.include_router(speech_router)
-    app.include_router(stripe_router)
-    app.include_router(practice_router)
-    app.include_router(contact_router)
 
     return app
 
