@@ -50,6 +50,12 @@ class Settings(BaseSettings):
     # Payments
     stripe_secret_key: str | None = Field(default=None, description="Stripe secret key")
     stripe_webhook_secret: str | None = Field(default=None, description="Stripe webhook secret")
+    stripe_price_id_starter: str | None = Field(default=None, description="Stripe price ID for starter plan")
+    stripe_price_id_premium: str | None = Field(default=None, description="Stripe price ID for premium plan")
+    stripe_price_id_upgrade: str | None = Field(default=None, description="Stripe price ID for upgrade to premium")
+
+    # Application URLs
+    app_base_url: str = Field(default="http://localhost:5173", description="Base URL for the application")
 
     # Email
     sendgrid_api_key: str | None = Field(default=None, description="SendGrid API key")

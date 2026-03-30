@@ -20,9 +20,18 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    port: 5173,
     fs: {
       strict: true,
       deny: ["**/.*"],
+    },
+    proxy: {
+      // Proxy API requests to Python backend (port 8000)
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });

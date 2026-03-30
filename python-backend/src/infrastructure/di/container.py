@@ -25,6 +25,7 @@ class Container(containers.DeclarativeContainer):
         modules=[
             "src.api.main",
             "src.api.routes",
+            "src.api.routes.auth",
         ],
         packages=[
             "src.api.routes",
