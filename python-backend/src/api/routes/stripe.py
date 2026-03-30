@@ -298,7 +298,7 @@ async def _handle_checkout_completed(
         .values(
             subscription_status=plan_type,
             subscription_id=session.get("subscription") or session.get("id"),
-            subscription_expires_at=expires_at,
+            starter_expires_at=expires_at,
         )
     )
     await db.commit()
