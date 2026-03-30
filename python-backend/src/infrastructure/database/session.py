@@ -121,12 +121,12 @@ class DatabaseSession:
 
     @asynccontextmanager
     async def session(self) -> AsyncGenerator[AsyncSession, None]:
-        """Create a new database session with automatic cleanup.
+        """Create a new database session with automatic commit/rollback.
 
         Usage:
             async with db.session() as session:
                 result = await session.execute(query)
-                await session.commit()
+                # Commits automatically on success
 
         Yields:
             AsyncSession instance
@@ -137,6 +137,7 @@ class DatabaseSession:
         session = self._session_factory()
         try:
             yield session
+            await session.commit()  # Auto-commit on success
         except Exception:
             await session.rollback()
             raise

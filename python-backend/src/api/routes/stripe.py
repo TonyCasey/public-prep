@@ -14,8 +14,8 @@ from sqlalchemy import select, update
 from src.api.dependencies import DbSession
 from src.api.middleware.auth import CurrentUser
 from src.application.interfaces.stripe_service import IStripeService, StripeServiceError
-from src.domain.entities import User
 from src.infrastructure.config import get_settings
+from src.infrastructure.database.models import User as UserModel
 from src.infrastructure.services.stripe_service import StripePaymentService
 
 logger = logging.getLogger(__name__)
@@ -101,7 +101,7 @@ async def create_checkout_session(
     price_ids = get_stripe_price_ids()
 
     # Get user's current subscription status
-    result = await db.execute(select(User).where(User.id == current_user.id))
+    result = await db.execute(select(UserModel).where(UserModel.id == current_user.id))
     user = result.scalar_one_or_none()
 
     if not user:
@@ -145,8 +145,8 @@ async def create_checkout_session(
 
             # Update user with Stripe customer ID
             await db.execute(
-                update(User)
-                .where(User.id == current_user.id)
+                update(UserModel)
+                .where(UserModel.id == current_user.id)
                 .values(stripe_customer_id=customer_id)
             )
             await db.commit()
@@ -257,7 +257,7 @@ async def _handle_checkout_completed(
 
     # Find user by Stripe customer ID
     result = await db.execute(
-        select(User).where(User.stripe_customer_id == customer_id)
+        select(UserModel).where(UserModel.stripe_customer_id == customer_id)
     )
     user = result.scalar_one_or_none()
 
@@ -293,8 +293,8 @@ async def _handle_checkout_completed(
     logger.info(f"Updating user {user.id} subscription to {plan_type}")
 
     await db.execute(
-        update(User)
-        .where(User.id == user.id)
+        update(UserModel)
+        .where(UserModel.id == user.id)
         .values(
             subscription_status=plan_type,
             subscription_id=session.get("subscription") or session.get("id"),
