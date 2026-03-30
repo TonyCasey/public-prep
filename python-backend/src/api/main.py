@@ -16,8 +16,10 @@ from src.api.routes import (
     ai_router,
     answers_router,
     auth_router,
+    contact_router,
     documents_router,
     interviews_router,
+    practice_router,
     questions_router,
     ratings_router,
     speech_router,
@@ -134,6 +136,8 @@ def create_app() -> FastAPI:
     app.include_router(ai_router)
     app.include_router(speech_router)
     app.include_router(stripe_router)
+    app.include_router(practice_router)
+    app.include_router(contact_router)
 
     return app
 
