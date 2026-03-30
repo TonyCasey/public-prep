@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 // Use staging URL in CI, localhost for local development
-const baseURL = process.env.PLAYWRIGHT_BASE_URL || process.env.BASE_URL || 'http://localhost:5000';
+// Port 5173 = Vite dev server (proxies API to backend)
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || process.env.BASE_URL || 'http://localhost:5173';
 const isCI = !!process.env.CI;
 const isRemote = baseURL.startsWith('https://');
 
@@ -31,13 +32,9 @@ export default defineConfig({
     },
   ],
 
-  // Only start local server when not testing against remote URL
-  ...(isRemote ? {} : {
-    webServer: {
-      command: 'npm run dev',
-      url: 'http://localhost:5000',
-      reuseExistingServer: !isCI,
-      timeout: 120000,
-    },
-  }),
+  // WebServer config:
+  // - Remote URL (staging/prod): No server needed, tests hit deployed app
+  // - Local development: No webServer - run `npm run dev` in separate terminal
+  // - CI with local URL: Start server (would need proper env setup)
+  // Note: For local e2e testing, start server manually: `npm run dev`
 });

@@ -8,7 +8,7 @@ test.describe('Smoke Tests', () => {
 
   test('auth page loads', async ({ page }) => {
     await page.goto('/auth');
-    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.getByLabel('Email')).toBeVisible();
   });
 
   test('API health check', async ({ request }) => {
@@ -24,15 +24,17 @@ test.describe('Authentication Flow', () => {
   test('can register new user', async ({ page }) => {
     await page.goto('/auth');
 
-    // Fill registration form
-    const inputs = await page.locator('input').all();
-    await inputs[0].fill('E2E');
-    await inputs[1].fill('Test');
-    await inputs[2].fill(testEmail);
-    await inputs[3].fill(testPassword);
+    // Wait for form to load
+    await page.waitForSelector('text=Create an account');
+
+    // Fill registration form using labels
+    await page.getByLabel('First Name').fill('E2E');
+    await page.getByLabel('Last Name').fill('Test');
+    await page.getByLabel('Email').fill(testEmail);
+    await page.getByLabel('Password').fill(testPassword);
 
     // Submit
-    await page.locator('button[type="submit"]').first().click();
+    await page.getByRole('button', { name: /create your account/i }).click();
 
     // Should redirect to app or show success
     await expect(page).toHaveURL(/\/(app|dashboard)?/, { timeout: 10000 });
