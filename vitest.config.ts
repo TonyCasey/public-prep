@@ -8,10 +8,10 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./test/setup.ts'],
+    setupFiles: ['./tests/setup.ts'],
     css: false,
-    include: ['test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    exclude: ['e2e/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
+    include: ['tests/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: ['tests/e2e/**/*', 'node_modules/**/*', 'dist/**/*', 'build/**/*'],
     alias: {
       '@': resolve(__dirname, './frontend/src'),
       '@shared': resolve(__dirname, './shared'),
