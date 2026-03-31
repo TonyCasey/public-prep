@@ -24,10 +24,11 @@ jobs:
 
       - name: Deploy to Railway Production
         run: |
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+          railway link --project ${RAILWAY_PROJECT_ID} --environment production
           railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
       - name: Wait for deployment
         run: sleep 60
