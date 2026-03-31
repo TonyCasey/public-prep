@@ -4,12 +4,10 @@ on:
   push:
     branches: [staging]
 
-env:
-  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
+    environment: staging
     outputs:
       staging_url: ${{ steps.get-url.outputs.url }}
 
@@ -28,7 +26,7 @@ jobs:
 
       - name: Deploy to Railway Staging
         run: |
-          railway link --environment staging
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment staging
           railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
