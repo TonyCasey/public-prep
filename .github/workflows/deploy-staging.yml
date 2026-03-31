@@ -7,7 +7,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: public-prep / staging
     outputs:
       staging_url: ${{ steps.get-url.outputs.url }}
 
@@ -23,14 +23,6 @@ jobs:
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
-
-      - name: Debug secrets
-        run: |
-          echo "PROJECT_ID length: ${#RAILWAY_PROJECT_ID}"
-          echo "TOKEN length: ${#RAILWAY_TOKEN}"
-        env:
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
       - name: Deploy to Railway Staging
         run: |
