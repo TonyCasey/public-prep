@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy to Railway Staging
         run: |
-          railway link ${RAILWAY_PROJECT_ID} --environment staging
+          railway link --project ${RAILWAY_PROJECT_ID} --environment staging
           railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
