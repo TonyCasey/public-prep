@@ -25,12 +25,11 @@ jobs:
         run: npm install -g @railway/cli
 
       - name: Deploy to Railway Staging
-        run: |
-          railway link --project ${RAILWAY_PROJECT_ID} --environment staging
-          railway up --detach
+        run: railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          RAILWAY_ENVIRONMENT: staging
 
       - name: Wait for deployment
         run: sleep 60
