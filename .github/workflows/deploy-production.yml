@@ -4,12 +4,10 @@ on:
   push:
     branches: [main]
 
-env:
-  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout code
@@ -26,7 +24,7 @@ jobs:
 
       - name: Deploy to Railway Production
         run: |
-          railway link --environment production
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
           railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
