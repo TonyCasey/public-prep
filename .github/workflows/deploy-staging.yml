@@ -5,42 +5,27 @@ on:
     branches: [staging]
 
 jobs:
-  deploy-staging:
+  wait-for-railway:
     runs-on: ubuntu-latest
-    environment: public-prep / staging
     outputs:
       staging_url: ${{ steps.get-url.outputs.url }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway Staging
-        run: railway up --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_ENVIRONMENT: staging
-
-      - name: Wait for deployment
-        run: sleep 60
-
       - name: Get staging URL
         id: get-url
+        run: echo "url=https://staging.publicprep.ie" >> $GITHUB_OUTPUT
+
+      - name: Wait for Railway auto-deploy
         run: |
-          echo "url=https://staging.publicprep.ie" >> $GITHUB_OUTPUT
+          echo "Waiting for Railway to auto-deploy from staging branch..."
+          sleep 120
+
+      - name: Health check
+        run: |
+          curl --fail --retry 10 --retry-delay 15 https://staging.publicprep.ie/api/health || exit 1
 
   e2e-tests:
-    needs: deploy-staging
+    needs: wait-for-railway
     runs-on: ubuntu-latest
 
     steps:
@@ -63,8 +48,8 @@ jobs:
         run: npx playwright test
         env:
           CI: true
-          BASE_URL: ${{ needs.deploy-staging.outputs.staging_url }}
-          PLAYWRIGHT_BASE_URL: ${{ needs.deploy-staging.outputs.staging_url }}
+          BASE_URL: ${{ needs.wait-for-railway.outputs.staging_url }}
+          PLAYWRIGHT_BASE_URL: ${{ needs.wait-for-railway.outputs.staging_url }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
