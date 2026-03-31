@@ -24,12 +24,21 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
+      - name: Debug secrets
+        run: |
+          echo "PROJECT_ID length: ${#RAILWAY_PROJECT_ID}"
+          echo "TOKEN length: ${#RAILWAY_TOKEN}"
+        env:
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
       - name: Deploy to Railway Staging
         run: |
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment staging
+          railway link ${RAILWAY_PROJECT_ID} --environment staging
           railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
 
       - name: Wait for deployment
         run: sleep 60
