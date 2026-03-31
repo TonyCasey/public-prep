@@ -5,36 +5,18 @@ on:
     branches: [main]
 
 jobs:
-  deploy-production:
+  wait-for-railway:
     runs-on: ubuntu-latest
-    environment: public-prep / production
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway Production
-        run: railway up --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_ENVIRONMENT: production
-
-      - name: Wait for deployment
-        run: sleep 60
+      - name: Wait for Railway auto-deploy
+        run: |
+          echo "Waiting for Railway to auto-deploy from main branch..."
+          sleep 120
 
       - name: Health check
         run: |
-          curl --fail --retry 5 --retry-delay 10 https://publicprep.ie/api/health || exit 1
+          curl --fail --retry 10 --retry-delay 15 https://publicprep.ie/api/health || exit 1
 
       - name: Deployment summary
         run: |
